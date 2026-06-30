@@ -25,18 +25,18 @@
 - **Repo:** https://github.com/abhishek-ennoble/prithvi-muladhara.git
 - **Visibility:** Private
 - **Account:** abhishek-ennoble (Ennoble AI account)
-- **Status:** Repo created. Initial `package.json` and `app.json` were
-  manually uploaded via GitHub's phone browser (before laptop was available).
-  Full project then brought in locally via ZIP download — **local folder and
-  GitHub repo are likely NOT in sync yet.** Need to `git add`, commit, and
-  push the full local project state before relying on GitHub as source of truth.
+- **Status:** Phase 0 pushed to GitHub on 2026-06-30. SDK upgraded to 54 on
+  2026-06-30 after Expo Go load failure (SDK 51 incompatible with current Expo Go).
 
 ---
 
 ## What's installed / working
 
-- ✅ `npm install` completed successfully — 1169 packages installed
-- ✅ `npx expo start` runs and produces a QR code / Metro bundler starts
+- ✅ Expo SDK **54** (upgraded from 51 for Expo Go compatibility)
+- ✅ React Native **0.81.5**, React **19.1.0**
+- ✅ `babel-preset-expo` installed (required after SDK upgrade)
+- ✅ `npx expo-doctor` passes (18/18 checks)
+- ✅ Android bundle export succeeds after SDK upgrade
 - ✅ Required Expo assets are present:
   - `assets/icon.png`
   - `assets/splash.png`
@@ -77,6 +77,32 @@ project scaffold referenced icons that were never generated.
 2. OR remove icon/splash/adaptiveIcon references from `app.json` temporarily
 **Status as of Phase 0:** Fixed. The required Expo asset files are present in
 `assets/`, and `npx expo start` reaches Metro successfully.
+
+## Expo Go troubleshooting (2026-06-30)
+
+**Symptom:** Expo Go loads for a long time, then shows "Something went wrong."
+
+**Root cause found:** Project was on Expo SDK 51. Current Expo Go (App Store /
+Play Store, June 2026) expects SDK 54+. SDK mismatch prevents the app from
+running on a physical device.
+
+**Fix applied:** Upgraded to Expo SDK 54 and aligned all dependencies.
+
+**If it still fails after pulling latest code:**
+
+1. From project root, run:
+   ```powershell
+   cd D:\Personal\Muladhara\prithvi-muladhara-expo\prithvi-app
+   npm install
+   npx expo start -c --tunnel
+   ```
+2. Use `--tunnel` if phone and PC are on different networks or Windows
+   firewall blocks LAN access to port 8081.
+3. Confirm Expo Go is updated from the App Store / Play Store.
+4. Watch the Metro terminal when you scan the QR — any red error there is the
+   actual crash reason.
+
+---
 
 ### Issue 3: SOUL.md missing from local folder
 `SOUL.md` was written in chat AFTER the ZIP was generated, so it never made

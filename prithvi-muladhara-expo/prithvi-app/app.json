@@ -12,12 +12,16 @@
       "backgroundColor": "#0D0A06",
       "resizeMode": "contain"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.prithvi.muladhara",
       "infoPlist": {
-        "UIBackgroundModes": ["audio"]
+        "UIBackgroundModes": [
+          "audio"
+        ]
       }
     },
     "android": {
@@ -26,7 +30,11 @@
         "backgroundColor": "#0D0A06"
       },
       "package": "com.prithvi.muladhara",
-      "permissions": ["VIBRATE", "WAKE_LOCK"]
+      "permissions": [
+        "VIBRATE",
+        "WAKE_LOCK",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,8 +42,16 @@
     "plugins": [
       [
         "expo-av",
-        { "microphonePermission": false }
+        {
+          "microphonePermission": false
+        }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ee63cf67-402f-451e-8a8d-08e934b02606"
+      }
+    },
+    "owner": "anemptyhead"
   }
 }

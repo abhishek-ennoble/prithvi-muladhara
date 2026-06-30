@@ -20,6 +20,7 @@ export const Colors = {
   // Muted signal
   ash:         '#8A7A62',
   stone:       '#5A4E3A',
+  sage:        '#6B7C5E',
 
   // Chakra
   muladhara:   '#B03020',   // deep red — root
