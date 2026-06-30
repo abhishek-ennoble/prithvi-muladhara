@@ -1,0 +1,292 @@
+# Prithvi · Muladhara — Cursor Rules
+# Read this fully before writing a single line of code.
+# Then read SOUL.md. Then read SETUP_LOG.md.
+
+---
+
+## What this is
+
+A sacred healing app. Not a product. Not a wellness SaaS.
+A sincere attempt to help people heal the Earth element (Prithvi tattva)
+within themselves and on the planet — through mantra chanting, awareness,
+and collective resonance.
+
+The standard we are building to: world-class in design, sacred in feeling,
+production-grade in engineering. Every screen should feel like it was made
+with devotion, not with deadlines.
+
+---
+
+## Navigation — 3 tabs, locked
+
+| Tab | Sanskrit | Purpose | Default? |
+|-----|----------|---------|----------|
+| Sadhana | साधना | Chanting practice | YES — always opens here |
+| Bhumi | भूमि | Collective map (real-time) | No |
+| Jnana | ज्ञान | Knowledge (Know) + Journal (Reflect) | No |
+
+Do not add tabs. Do not suggest alternatives. Do not move Sadhana from default.
+
+---
+
+## Tech stack — locked
+
+- **Framework:** Expo ~51 managed workflow + EAS
+- **Language:** TypeScript strict mode
+- **Navigation:** React Navigation (bottom tabs)
+- **Backend:** Supabase (real-time, RLS, anon auth, PostgreSQL)
+- **Data fetching:** TanStack Query (React Query) — for Supabase data, caching, loading states
+- **Audio:** expo-av, streaming from AWS S3 + CloudFront
+- **Fonts:** EB Garamond + Space Mono via expo-google-fonts
+- **Animations:** React Native Animated API + Reanimated 2 for complex gestures
+- **State:** Context API only (Language, User, Guidance) — no Redux, no Zustand
+
+Do NOT suggest: ejecting Expo, Firebase, Redux Toolkit, NativeWind,
+StyleSheet alternatives, or any library adding >100kb without strong reason.
+
+---
+
+## Design tokens — never hardcode, always import from src/theme/tokens.ts
+
+```ts
+void:      '#0D0A06'   // primary background
+deep:      '#151008'
+ground:    '#1E1508'
+mud:       '#2E2010'
+bark:      '#4A3520'
+ochre:     '#C17D3C'   // primary accent
+gold:      '#D4A843'   // sacred highlights, key numbers
+parchment: '#EDE3CF'   // primary text
+cream:     '#F5EED8'
+ash:       '#7A6A52'   // secondary text
+stone:     '#5A4E3A'   // muted / tertiary
+muladhara: '#B03020'   // root chakra red — use sparingly
+sage:      '#6B7C5E'   // calm green
+verified:  '#3A7A4A'   // source tag: peer-reviewed
+dharmic:   '#C9962A'   // source tag: scriptural/traditional
+observed:  '#8A4A3A'   // source tag: reported/contested
+```
+
+Typography: **EB Garamond** for all content/mantra text. **Space Mono** for all
+data, stats, timers, source tags. No other fonts, ever.
+
+---
+
+## Proactive flagging — always
+
+If you notice ANY of the following, stop and flag it before implementing:
+
+- A decision that conflicts with SOUL.md principles
+- A pattern that could add cognitive load or anxiety to a depleted user
+- A library or approach with significant performance cost
+- Something that would require a breaking change to existing data schema
+- A platform behavior difference (iOS vs Android) that affects the sacred experience
+- Anything that touches user data, privacy, or anonymous identity
+- A content claim that doesn't have a clear source type (verified/dharmic/observed)
+- Security concerns of any kind
+
+Say: "Flagging before continuing: [issue]. My recommendation: [X]. Shall I proceed?"
+
+---
+
+## UX excellence standard
+
+This app is used by people who are often anxious, depleted, or exhausted.
+Every interaction must slow the nervous system, not stimulate it.
+
+**Interaction principles:**
+- No animations faster than 300ms unless functionally required
+- All transitions: fade or gentle slide-from-below — never jarring swipes or pops
+- Haptics: only on session start and session end — subtle, deliberate (expo-haptics)
+- Every screen usable in 30 seconds OR rewarding over 20 minutes — both valid
+- No modals stacking more than one deep
+- Loading states must always be present and feel calm (not spinning loaders — soft fades)
+- Empty states must feel inviting, not broken ("Your journal is waiting" not "No entries")
+- Error states must be gentle and never blame the user
+
+**Scroll and layout:**
+- No infinite scroll anywhere in the app
+- Lists must have visible end — users should know they've seen everything
+- Generous padding — this app should feel spacious, not packed
+- Touch targets minimum 44×44pt (Apple HIG) / 48×48dp (Material) — non-negotiable
+- Bottom navigation safe area always respected on both platforms
+
+**The breathing circle motif:**
+The signature animation of this app. Slow-pulsing concentric rings, 3–6 second
+full cycle, easing: ease-in-out. Used around: Earth icon, Muladhara symbol,
+mantra player center. Build as a reusable `<BreathingCircle />` component.
+Never use this animation for decorative purposes alone.
+
+---
+
+## iOS and Android best practices
+
+**Always handle:**
+- `SafeAreaView` / `useSafeAreaInsets` on every screen — notch, home indicator, dynamic island
+- Keyboard avoiding behavior on all input screens (journal entry, feedback)
+- Android back button / gesture navigation — always test that it does the right thing
+- Platform-specific haptic patterns (`expo-haptics` handles this, use it correctly)
+- Status bar style: always `light` (dark backgrounds throughout)
+
+**Audio (expo-av) platform specifics:**
+- iOS: request audio session category `Playback` so audio continues when screen locks
+- Android: acquire WakeLock during active sessions (expo-keep-awake)
+- Both: graceful audio interruption handling (phone call, other apps) — pause, don't crash
+- Silent mode: Om launch sound and notification sounds must respect device silent mode
+- Background audio: Gayatri Mantra must continue when app is backgrounded or screen dims
+
+**Performance targets:**
+- App launch to interactive: under 3 seconds on mid-range Android (2020 hardware)
+- Tab switch: under 100ms perceived — pre-render adjacent tabs
+- Map render (Bhumi): initial paint under 1 second with seed data, live data loads after
+- Animation: 60fps target, never drop below 30fps — use `useNativeDriver: true` always
+- Memory: no memory leaks from audio sessions — always unload expo-av sounds on unmount
+
+**Accessibility (a11y):**
+- Every interactive element has `accessibilityLabel` and `accessibilityRole`
+- Mantra text has `accessibilityLanguage` set correctly (Sanskrit/Hindi/English)
+- Color contrast: all text meets WCAG AA minimum (4.5:1) against backgrounds
+- Audio-only content has text alternative available (mantra text always visible)
+
+---
+
+## Sacred audio/visual design standards
+
+This is not a meditation timer app. The audio-visual experience itself should
+induce a sense of the sacred — calm, ancient, grounded, alive.
+
+**Audio standards:**
+- Mantra audio must loop seamlessly — no click, no gap at loop point
+- Volume: never sudden. Always fade in (1–2 seconds) on session start, fade out on end
+- The Om launch sound (see below) sets the tone for the entire session
+- Silence is a feature. The silent chanting mode is as sacred as the audio mode.
+- Never autoplay audio without user initiating it
+
+**Visual standards:**
+- Dark backgrounds (#0D0A06) should feel like depth, not emptiness — use subtle
+  radial gradients (expo-linear-gradient) to give them warmth and dimension
+- Text on dark: never pure white. Always parchment (#EDE3CF) or cream (#F5EED8)
+- Gold (#D4A843) is sacred — use it for the most important element on each screen.
+  Not for every button. Not for decoration. For what matters most.
+- The Devanagari script for mantra text: large, EB Garamond, generous line height (1.8)
+  — let it breathe. Sanskrit should never look cramped.
+- Source tags (verified/dharmic/observed): small, Space Mono, subtle — they inform,
+  they don't dominate
+- Images and icons: minimal. This app communicates through type, light, and sound
+  more than through illustration
+
+**The Om launch experience (optional, default ON for new users):**
+- On app cold open, before the Sadhana screen appears: a 2–3 second Om sound
+  fades in softly, holds briefly, then fades out as the screen fades in
+- The screen during this moment: pure #0D0A06 with a single gold breathing circle
+  at center — nothing else
+- Respects device silent mode: if phone is on silent, skip the sound but show the circle
+- Setting: "Om on open" toggle in Settings (Jnana → Reflect → Settings or Profile area)
+- Default: ON for first install. User can turn off. Never ask them to turn it back on.
+- Audio file: a clean, single Om — not a recording with reverb tail longer than 3 seconds
+- This is the app's first impression. It must be the best 3 seconds in the app.
+
+---
+
+## Documentation standards
+
+Every file, component, and function should be self-documenting.
+
+**Components:**
+```tsx
+/**
+ * BreathingCircle
+ * Slow-pulsing concentric rings used as the app's signature calming motif.
+ * Animation: 3–6 second full cycle, ease-in-out, useNativeDriver: true.
+ *
+ * @param size - outer diameter in points (default: 120)
+ * @param color - ring color (default: tokens.gold)
+ * @param rings - number of concentric rings (default: 3)
+ */
+```
+
+**Data entries in research.ts:**
+Every fact object must have: `stat`, `desc`, `source`, `type` (verified/dharmic/observed).
+No undocumented fields. No facts without sources.
+
+**Functions:** JSDoc for anything not immediately obvious from the name.
+
+**Complex logic:** Inline comments explaining WHY, not just WHAT.
+"// Fade audio before unloading to prevent click artifact" not "// fade audio"
+
+---
+
+## Code quality standards
+
+- **No `any` types** unless truly unavoidable — always with `// TODO: type this properly`
+- **No hardcoded strings** visible to users — all text through translation system (en.ts/hi.ts)
+- **No hardcoded colors** — always from tokens.ts
+- **No magic numbers** — name your constants (`const MALA_COUNT = 108`, not `108`)
+- **Component size:** if a component exceeds ~150 lines, consider splitting
+- **useEffect cleanup:** always return cleanup function when subscribing to anything
+- **Async/await over .then()** — consistent, readable async handling
+- **Error boundaries:** wrap major screen sections — a journal crash shouldn't crash the whole app
+
+---
+
+## Content rules — non-negotiable
+
+Every fact, claim, or piece of content in the app carries exactly one source tag:
+- `verified` — peer-reviewed, institutional, replicable
+- `dharmic` — scriptural, traditional, ancient record
+- `observed` — reported, experiential, emerging, or contested
+
+Never present contested research as proven.
+Never suppress traditional knowledge because it lacks a citation.
+Every new entry in research.ts must include `source` and `type`.
+
+---
+
+## What to NEVER implement
+
+- Streaks that punish absence
+- Badges, points, achievement mechanics
+- Push notifications except explicit opt-in for global resonance windows
+- Social features: likes, comments, follower counts, sharing to external platforms
+- Advertising of any kind
+- Premium tiers or content gates
+- Leaderboards or competitive rankings
+- Dark patterns (false urgency, guilt, infinite scroll)
+- Solfeggio on the Bhumi map
+- "Forecast" language that creates anxiety
+- Any feature maximizing time-in-app over wellbeing
+
+---
+
+## Key files
+
+| File | Purpose |
+|------|---------|
+| `SOUL.md` | The design constitution — read before every session |
+| `PRD.md` | Full product spec — screens, DB schema, roadmap |
+| `DECISIONS.md` | Every locked decision and why |
+| `RESEARCH_PIPELINE.md` | Research findings, frequency studies, inclusion status |
+| `SETUP_LOG.md` | Current technical state — always read before starting |
+| `src/data/research.ts` | All app content (eras, facts, mantras) |
+| `src/theme/tokens.ts` | Design tokens — single source of truth for colors |
+
+---
+
+## DB tables (Supabase) — full schema in PRD.md Section 9
+
+`profiles` `sessions` `anubhav` `sacred_moments`
+`user_milestones` `city_seeds` `feedback` `research_log`
+
+Never create tables or columns outside this schema without flagging first.
+
+---
+
+## Session hygiene — required
+
+After every coding session:
+1. Update `SETUP_LOG.md` — what was done, what's next, any blockers
+2. New decisions made → add to `DECISIONS.md`
+3. Research used → verify `RESEARCH_PIPELINE.md` is current
+4. `git add . && git commit -m "..." && git push origin main`
+
+This is how nothing gets lost between sessions.

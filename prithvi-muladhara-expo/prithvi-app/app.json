@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Prithvi · Muladhara",
+    "slug": "prithvi-muladhara",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0D0A06",
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#0D0A06",
+      "resizeMode": "contain"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.prithvi.muladhara",
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0D0A06"
+      },
+      "package": "com.prithvi.muladhara",
+      "permissions": ["VIBRATE", "WAKE_LOCK"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-av",
+        { "microphonePermission": false }
+      ]
+    ]
+  }
+}
